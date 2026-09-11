@@ -5,129 +5,345 @@
 const menuButton = document.getElementById("menuButton");
 const nav = document.getElementById("nav");
 
-menuButton.addEventListener("click", () => {
-    nav.classList.toggle("active");
-});
+if (menuButton && nav) {
 
-document.querySelectorAll(".nav a").forEach(link => {
-    link.addEventListener("click", () => {
-        nav.classList.remove("active");
+    menuButton.addEventListener("click", () => {
+
+        nav.classList.toggle("active");
+
+        menuButton.textContent =
+            nav.classList.contains("active")
+                ? "×"
+                : "☰";
+
     });
-});
+
+
+    document.querySelectorAll(".nav a").forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            nav.classList.remove("active");
+
+            menuButton.textContent = "☰";
+
+        });
+
+    });
+
+}
+
 
 
 /* =========================
    CURRENT YEAR
 ========================= */
 
-document.getElementById("year").textContent =
-    new Date().getFullYear();
+const yearElement =
+    document.getElementById("year");
+
+if (yearElement) {
+
+    yearElement.textContent =
+        new Date().getFullYear();
+
+}
+
+
+
+/* =========================
+   PROJECTS DATA
+========================= */
+
+const projects = {
+
+    store: {
+
+        kicker: "01 / E-COMMERCE",
+
+        icon: "01",
+
+        title: "متجر إلكتروني",
+
+        text:
+            "متجر عصري لعرض المنتجات بطريقة واضحة وسهلة مع تجربة متجاوبة.",
+
+        details: [
+            "Responsive",
+            "Product Pages",
+            "UI/UX",
+            "Fast"
+        ]
+
+    },
+
+
+    restaurant: {
+
+        kicker: "02 / RESTAURANT",
+
+        icon: "02",
+
+        title: "موقع مطعم / Café",
+
+        text:
+            "واجهة مناسبة للمطاعم والمقاهي مع منيو واضح ومعلومات التواصل والطلب.",
+
+        details: [
+            "Menu",
+            "Mobile",
+            "Modern UI",
+            "Contact"
+        ]
+
+    },
+
+
+    business: {
+
+        kicker: "03 / BUSINESS",
+
+        icon: "03",
+
+        title: "موقع شركة",
+
+        text:
+            "موقع احترافي يبرز الخدمات والمعلومات المهمة ويبني حضوراً رقمياً قوياً.",
+
+        details: [
+            "Business",
+            "Responsive",
+            "SEO Ready",
+            "Fast"
+        ]
+
+    }
+
+};
+
 
 
 /* =========================
    PROJECT MODAL
 ========================= */
 
-const projectModal = document.getElementById("projectModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalText = document.getElementById("modalText");
-const modalIcon = document.getElementById("modalIcon");
+const projectModal =
+    document.getElementById("projectModal");
 
-function showProject(project) {
+const modalKicker =
+    document.getElementById("modalKicker");
 
-    if (project === "E-Commerce") {
+const modalIcon =
+    document.getElementById("modalIcon");
 
-        modalIcon.textContent = "🛒";
-        modalTitle.textContent = "متجر إلكتروني";
-        modalText.textContent =
-            "موقع متجر إلكتروني احترافي لعرض المنتجات وتنظيم عمليات البيع والشراء.";
+const modalTitle =
+    document.getElementById("modalTitle");
 
-    } else if (project === "Restaurant") {
+const modalText =
+    document.getElementById("modalText");
 
-        modalIcon.textContent = "🍔";
-        modalTitle.textContent = "موقع مطعم";
-        modalText.textContent =
-            "موقع عصري للمطاعم يحتوي على قائمة الطعام والمعلومات وطرق التواصل.";
-
-    } else if (project === "Business") {
-
-        modalIcon.textContent = "💼";
-        modalTitle.textContent = "موقع شركة";
-        modalText.textContent =
-            "موقع احترافي للشركات والخدمات مع تصميم يعكس هوية العلامة التجارية.";
-    }
-
-    projectModal.classList.add("show");
-}
+const modalDetails =
+    document.getElementById("modalDetails");
 
 
-function closeProject() {
-    projectModal.classList.remove("show");
-}
 
+function showProject(id) {
 
-projectModal.addEventListener("click", (event) => {
+    const project =
+        projects[id];
 
-    if (event.target === projectModal) {
-        closeProject();
-    }
-
-});
-
-
-/* =========================
-   CONTACT → WHATSAPP
-========================= */
-
-const contactForm = document.getElementById("contactForm");
-
-
-contactForm.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-
-    const name =
-        document.getElementById("name").value.trim();
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const websiteType =
-        document.getElementById("websiteType").value;
-
-    const message =
-        document.getElementById("message").value.trim();
-
-
-    if (!name || !email || !websiteType || !message) {
-
-        alert("يرجى ملء جميع المعلومات.");
-
+    if (!project) {
         return;
     }
 
 
-    /*
-       ضع هنا رقم WhatsApp ديالك
-       
-       مهم:
-       المغرب = 212
-       مثال:
-       0612345678
-       تصبح:
-       212612345678
-
-       ما تكتبش + ولا مسافات.
-    */
-
-    const myWhatsApp = "+212 783-698160";
+    modalKicker.textContent =
+        project.kicker;
 
 
-    /* إنشاء الرسالة */
+    modalIcon.textContent =
+        project.icon;
 
-    const whatsappMessage =
-`🔔 طلب جديد من الموقع
+
+    modalTitle.textContent =
+        project.title;
+
+
+    modalText.textContent =
+        project.text;
+
+
+    modalDetails.innerHTML =
+        project.details
+            .map(item => `<span>${item}</span>`)
+            .join("");
+
+
+    projectModal.classList.add("show");
+
+    projectModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+
+function closeProject() {
+
+    projectModal.classList.remove("show");
+
+    projectModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+
+/* =========================
+   CLOSE MODAL OUTSIDE
+========================= */
+
+projectModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            projectModal
+        ) {
+
+            closeProject();
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   ESC CLOSE MODAL
+========================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeProject();
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   CONTACT FORM
+========================= */
+
+const contactForm =
+    document.getElementById(
+        "contactForm"
+    );
+
+
+contactForm.addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+
+        const name =
+            document
+                .getElementById("name")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const websiteType =
+            document
+                .getElementById("websiteType")
+                .value;
+
+
+        const budget =
+            document
+                .getElementById("budget")
+                .value;
+
+
+        const message =
+            document
+                .getElementById("message")
+                .value
+                .trim();
+
+
+
+        if (
+            !name ||
+            !email ||
+            !websiteType ||
+            !budget ||
+            !message
+        ) {
+
+            alert(
+                "يرجى ملء جميع المعلومات."
+            );
+
+            return;
+
+        }
+
+
+
+        /*
+            مهم:
+
+            رقم WhatsApp خاص بـ WebStudio.
+
+            خاصو يكون:
+            أرقام فقط
+
+            بلا:
+            +
+            مسافات
+            -
+        */
+
+        const myWhatsApp =
+            "212783698160";
+
+
+
+        const whatsappMessage =
+`🔔 طلب جديد من WebStudio
 
 👤 الاسم:
 ${name}
@@ -138,42 +354,77 @@ ${email}
 🌐 نوع الموقع:
 ${websiteType}
 
+💰 الميزانية التقريبية:
+${budget}
+
 📝 تفاصيل المشروع:
 ${message}
 
 ━━━━━━━━━━━━━━
-📌 WebStudio`;
+WebStudio`;
 
 
-    /* تحويل الرسالة إلى WhatsApp */
 
-    const whatsappURL =
-        "https://wa.me/" +
-        myWhatsApp +
-        "?text=" +
-        encodeURIComponent(whatsappMessage);
+        const whatsappURL =
+            `https://wa.me/${myWhatsApp}?text=${encodeURIComponent(
+                whatsappMessage
+            )}`;
 
 
-    /* فتح WhatsApp */
 
-    window.open(whatsappURL, "_blank");
+        window.open(
+            whatsappURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
 
 
-    /* تفريغ الفورم */
+        contactForm.reset();
 
-    contactForm.reset();
+    }
+);
 
-});
 
 
 /* =========================
-   ESC CLOSE MODAL
+   SCROLL REVEAL
 ========================= */
 
-document.addEventListener("keydown", (event) => {
+const observer =
+    new IntersectionObserver(
+        entries => {
 
-    if (event.key === "Escape") {
-        closeProject();
-    }
+            entries.forEach(entry => {
 
-});
+                if (
+                    entry.isIntersecting
+                ) {
+
+                    entry.target.classList.add(
+                        "visible"
+                    );
+
+
+                    observer.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.12
+        }
+    );
+
+
+
+document
+    .querySelectorAll(".reveal")
+    .forEach(element => {
+
+        observer.observe(element);
+
+    });
